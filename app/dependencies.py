@@ -19,7 +19,7 @@ TEMPORARY_SECRET_KEY = os.environ["TEMPORARY_SECRET_KEY"]
 ALGORITHM = "HS256"
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/authenticate")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/authenticate")
 
 models.Base.metadata.create_all(bind=engine)
 
