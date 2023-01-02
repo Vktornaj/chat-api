@@ -39,6 +39,7 @@ jobs:
           remote_user: ${{ secrets.DEPLOY_USER }}
           remote_key: ${{ secrets.DEPLOY_KEY }}
           env_file: ${{ secrets.ENV_FILE }}
+          client_secret_file: ${{ secrets.CLIENT_SECRET_FILE }}
           local_dir: "."
           remote_dir: "/home/${{ secrets.DEPLOY_USER }}/chat_api"
         run: |
@@ -47,6 +48,7 @@ jobs:
           chmod 600 ~/.ssh/id_github
           echo "$env_file" > ./config/.env
           chmod 600 ./config/.env
+          echo "$client_secret_file" > ./app/client_secret.json
           rsync -avzr --delete -e "ssh -p ${remote_port} -i ~/.ssh/id_github -o StrictHostKeyChecking=no" ${local_dir} ${remote_user}@${remote_host}:${remote_dir}
           rm ~/.ssh/id_github
 
