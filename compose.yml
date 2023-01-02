@@ -1,0 +1,80 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: ./app
+    environment:
+      - ALLOWED_ORIGINS
+      - ACCESS_TOKEN_EXPIRE_MINUTES
+      - TEMPORARY_ACCESS_TOKEN_EXPIRE_MINUTES
+      - SECRET_KEY
+      - TEMPORARY_SECRET_KEY
+      - EMAIL_SENDER
+      - GOOGLE_APP_PASSWORD
+      - CLOUD_STORAGE_ACCESS_KEY
+      - CLOUD_STORAGE_SECRET_KEY
+      - CLOUD_PRIVATE_BUCKET
+      - CLOUD_PUBLIC_BUCKET
+      - PRIVATE_REGION
+      - PUBLIC_REGION
+      - GOOGLE_REDIRECT_URI
+      # - BROKER_URL
+    volumes:
+      - ./app:/code/app:ro
+      - ./tests:/code/tests:ro
+    ports:
+      - "8080:8000"
+    restart: unless-stopped
+    depends_on:
+      - db
+      - cache
+      # - queue
+      # - broker
+
+  db:
+    image: postgres:15.0-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    volumes: 
+      - db:/var/lib/postgresql/data
+
+  cache:
+    image: redis:7.0.5-alpine3.16
+    restart: unless-stopped
+
+  # broker:
+  #   image: rabbitmq:3.11-management-alpine
+  #   restart: unless-stopped
+  #   environment:
+  #     - RABBITMQ_DEFAULT_USER
+  #     - RABBITMQ_DEFAULT_PASS
+  #     - RABBITMQ_DEFAULT_VHOST
+      
+  # queue:
+  #   build:
+  #     context: ./queue
+  #   restart: unless-stopped
+  #   environment:
+  #     - BROKER_URL
+  #   volumes:
+  #     - ./queue/:/code/:ro
+  #   depends_on:
+  #     - broker
+
+  # queue_monitor:
+  #   build:
+  #     context: ./queue_monitor
+  #   restart: unless-stopped
+  #   environment:
+  #     - BROKER_URL
+  #   ports:
+  #     - "5566:5566"
+  #   depends_on:
+  #     - broker
+
+volumes:
+  db:
+    driver: local

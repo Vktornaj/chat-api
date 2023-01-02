@@ -1,0 +1,7 @@
+venv/
+sql_app.db
+app/__pycache__
+
+config/.env*
+
+app/client_secret.json
