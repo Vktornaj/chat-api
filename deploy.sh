@@ -20,7 +20,8 @@ while getopts 'b' flag; do
 done
 
 ssh -i ${ssh_key} ${remote_user}@${remote_host} sudo rm -rf chat_api/
-rsync -avzr --exclude-from='.gitignore' --exclude='.git/' --delete -e "ssh -p ${remote_port} -i ${ssh_key} -o StrictHostKeyChecking=no" ${local_dir} ${remote_user}@${remote_host}:${remote_dir}
+rsync -avzr --exclude='.git/' --exclude='app/venv/' --exclude='queue/venv/' --delete -e "ssh -p ${remote_port} -i ${ssh_key} -o StrictHostKeyChecking=no" ${local_dir} ${remote_user}@${remote_host}:${remote_dir}
+# rsync -avzr --exclude-from='.gitignore' --exclude='.git/' --delete -e "ssh -p ${remote_port} -i ${ssh_key} -o StrictHostKeyChecking=no" ${local_dir} ${remote_user}@${remote_host}:${remote_dir}
 
 if [ $b_flag ];
 then
