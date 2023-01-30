@@ -2,12 +2,12 @@
 
 set -e
 
-remote_host="api.geduardo.com"
+remote_host="3.129.45.65"
 remote_port=22
 remote_user="admin"
 local_dir=$(pwd)/
 remote_dir="/home/${remote_user}/chat_api"
-ssh_key="~/Desktop/Files/aws_keys/key_1.pem"
+ssh_key="~/Desktop/Files/aws_keys/key_001.pem"
 
 b_flag=''
 
@@ -27,7 +27,7 @@ if [ $b_flag ];
 then
     echo "rebuild mode"
     ssh -tt -i ${ssh_key} ${remote_user}@${remote_host} << EOF 
-docker compose -f chat_api/compose.yml down 
+docker compose -f chat_api/compose.yml down || true
 docker compose -f chat_api/compose.yml build 
 docker compose -f chat_api/compose.yml --env-file ~/chat_api/config/.env up -d
 exit

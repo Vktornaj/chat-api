@@ -6,6 +6,8 @@ docker compose down
 
 docker compose build
 
+source ./config/.env
+
 docker compose up -d
 
 docker compose logs -f
