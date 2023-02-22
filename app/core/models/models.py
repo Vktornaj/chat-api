@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID as AlchemyUUID
 from uuid import UUID
 
-from app.database import Base
+from database import Base
 
 
 class User(Base):

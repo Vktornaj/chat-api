@@ -1,24 +1,23 @@
 import os
 from fastapi import (
-    FastAPI, WebSocket, WebSocketDisconnect, Depends, HTTPException, status
+    FastAPI, WebSocket, WebSocketDisconnect, Depends
 )
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import redis
-from datetime import datetime, timezone
 import logging
 import pickle
 
-from app import crud
-from app.routers.logins import standar
-from app.routers.users import images
-from app.routers.users import root as _root
-from app.routers.users import messages
-from app.routers.logins import google
-from app.core.schemas.message import MessageSend, MessageCreate
-from app.core.schemas.user import User
-# from app.core.schemas.user import User
-from app.dependencies import get_db, get_client_id
+import crud
+from routers.logins import standar
+from routers.users import images
+from routers.users import root as _root
+from routers.users import messages
+from routers.logins import google
+from core.schemas.message import MessageSend, MessageCreate
+from core.schemas.user import User
+# from core.schemas.user import User
+from dependencies import get_db, get_client_id
 
 
 ALLOWED_ORIGINS = os.environ["ALLOWED_ORIGINS"].split(",")
@@ -139,17 +138,18 @@ def get_user_id(client_id: str):
         logger.info("no user_id")
         return None
     return user_id
-            
 
-@app.websocket("/messages/wss")
+
+@app.websocket("/wss/messages")
 async def websocket_endpoint(
     websocket: WebSocket,
     client_id: str = Depends(get_client_id),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
+
     user_id = get_user_id(client_id)
     if user_id is None:
-        return
+        return 
 
     user: User = crud.read_user(db, int(user_id.decode()))
 

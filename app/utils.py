@@ -10,13 +10,13 @@ from uuid import UUID
 import io
 import json
 
-from app import crud
-from app.core.schemas.user import User
-from app import cloud_storage
+import crud
+from core.schemas.user import User
+import cloud_storage
 
 
 # setup loggers
-logging.config.fileConfig('app/logging.conf', disable_existing_loggers=False)
+logging.config.fileConfig('./logging.conf', disable_existing_loggers=False)
 
 # get root logger
 logger = logging.getLogger(__name__)  # the __name__ resolve to "main" since we are at the root of the project. 

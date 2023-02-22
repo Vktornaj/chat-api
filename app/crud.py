@@ -2,11 +2,11 @@ from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 from uuid import UUID
 
-from app.core.schemas.user import UserCreate
-from app.core.schemas.image import ImgCreate
-from app.core.schemas.google import Credentials
-from app.core.models import models
-from app.core.schemas.message import MessageCreate
+from core.schemas.user import UserCreate
+from core.schemas.image import ImgCreate
+from core.schemas.google import Credentials
+from core.models import models
+from core.schemas.message import MessageCreate
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -68,7 +68,6 @@ def delete_user_img(db: Session, uuid: UUID):
     image = db.query(models.Image).filter(models.Image.uuid == uuid)
     image.delete()
     db.commit()
-    db.refresh()
 
 
 def update_password(db: Session, username: str, password: str):

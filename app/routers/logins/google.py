@@ -11,13 +11,13 @@ from datetime import datetime, timezone
 from io import BytesIO
 from oauthlib.oauth2.rfc6749.errors import InvalidGrantError
 
-from app import utils
-from app import crud
-from app.dependencies import get_db
-from app.core.schemas.google import Credentials as Credentials
-from app.core.schemas.user import User, UserCreate
-from app.core.schemas.image import ImgCreate
-from app import cloud_storage
+import utils
+import crud
+from dependencies import get_db
+from core.schemas.google import Credentials as Credentials
+from core.schemas.user import User, UserCreate
+from core.schemas.image import ImgCreate
+import cloud_storage
 
 
 ACCESS_TOKEN_EXP_M = int(os.environ["ACCESS_TOKEN_EXPIRE_MINUTES"])

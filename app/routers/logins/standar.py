@@ -8,17 +8,17 @@ from sqlalchemy.orm import Session
 import redis
 import json
 
-from app.dependencies import get_db
-from app import crud
-from app.core.schemas.token import Token
-from app.core.schemas.user import UserCreate
-from app.core.schemas.confirmation import ConfirmationEmail
-from app import utils
-from app.send_emails import emails as _emails
+from dependencies import get_db
+import crud
+from core.schemas.token import Token
+from core.schemas.user import UserCreate
+from core.schemas.confirmation import ConfirmationEmail
+import utils
+from send_emails import emails as _emails
 
 
 # setup loggers
-logging.config.fileConfig('app/logging.conf', disable_existing_loggers=False)
+logging.config.fileConfig('./logging.conf', disable_existing_loggers=False)
 
 # get root logger
 logger = logging.getLogger(__name__)  # the __name__ resolve to "main" since we are at the root of the project. 
@@ -37,7 +37,7 @@ router = APIRouter(
 cache = redis.Redis(host="cache")
 
 
-@router.post("/authenticate", response_model=Token)
+@router.post("/authenticate/", response_model=Token)
 async def login_for_access_token(db: Session = _db, form_data: OAuth2PasswordRequestForm = Depends()):
     if form_data.password == "":
         raise HTTPException(
@@ -58,7 +58,7 @@ async def login_for_access_token(db: Session = _db, form_data: OAuth2PasswordReq
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.post("/register", status_code=status.HTTP_202_ACCEPTED)
+@router.post("/register/", status_code=status.HTTP_202_ACCEPTED)
 def register(user: UserCreate, background_tasks: BackgroundTasks, db: Session = _db):
 
     user.email = user.email.lower()
@@ -89,7 +89,7 @@ def register(user: UserCreate, background_tasks: BackgroundTasks, db: Session = 
     }
 
 
-@router.post("/confirmation")
+@router.post("/confirmation/")
 def confirmation_email(data: ConfirmationEmail, db: Session = _db):
     if cache.exists(data.email):
         register_request: dict = json.loads(cache.get(data.email))

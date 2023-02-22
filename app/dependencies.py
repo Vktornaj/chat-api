@@ -1,16 +1,17 @@
 from fastapi import (
     Depends, HTTPException, status, Cookie, Query
 )
-from .database import SessionLocal, engine
+from database import SessionLocal, engine
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
 import os
+import logging
 
-from app.core.models import models
-from app.core.schemas.token import TokenData
-from app.core.schemas.user import User
-from app import utils
+from core.models import models
+from core.schemas.token import TokenData
+from core.schemas.user import User
+import utils
 
 # to get a string like this run:
 # openssl rand -hex 32
@@ -18,6 +19,10 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 TEMPORARY_SECRET_KEY = os.environ["TEMPORARY_SECRET_KEY"]
 ALGORITHM = "HS256"
 
+
+logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger(__name__)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/authenticate")
 

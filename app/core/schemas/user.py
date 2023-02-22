@@ -8,7 +8,7 @@ class UserCreate(BaseModel):
     last_name: str
     email: EmailStr
     password: str | None
-    code: str | None
+    code: int | None
     # TODO: add this data
     # birth_date: date
     # nationality: str

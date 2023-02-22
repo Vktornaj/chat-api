@@ -12,4 +12,4 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 CMD ["gunicorn", "-w", "1", "-k", "uvicorn.workers.UvicornWorker", \
     "--access-logfile", "-", \
     "--error-logfile", "-", \
-    "app.main:app", "--bind", "0.0.0.0:8000"]
+    "main:app", "--bind", "0.0.0.0:8000"]

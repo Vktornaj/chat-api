@@ -7,16 +7,16 @@ from datetime import datetime, timezone
 from typing import List
 from PIL import Image
 
-from app.dependencies import get_db, get_current_active_user
-from app import crud
-from app.core.schemas.user import User
-from app.core.schemas.image import ImgDB, ImgInfoURL, ImgInfoUUID, ImgCreate
-from app import utils
-from app import cloud_storage
+from dependencies import get_db, get_current_active_user
+import crud
+from core.schemas.user import User
+from core.schemas.image import ImgDB, ImgInfoURL, ImgInfoUUID, ImgCreate
+import utils
+import cloud_storage
 
 
 # setup loggers
-logging.config.fileConfig('app/logging.conf', disable_existing_loggers=False)
+logging.config.fileConfig('./logging.conf', disable_existing_loggers=False)
 
 # get root logger
 logger = logging.getLogger(__name__)  # the __name__ resolve to "main" since we are at the root of the project. 

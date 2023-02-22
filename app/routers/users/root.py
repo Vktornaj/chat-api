@@ -4,17 +4,17 @@ from sqlalchemy.orm import Session
 from uuid import UUID
 import os
 
-from app.dependencies import get_db, get_current_active_user
-from app import crud
-from app.core.schemas.user import UserInfo, User
-from app.core.schemas.password import Password, UpdatePassword
-from app.core.schemas.name import UpdateName
-from app import utils
-from app import cloud_storage
+from dependencies import get_db, get_current_active_user
+import crud
+from core.schemas.user import UserInfo, User
+from core.schemas.password import Password, UpdatePassword
+from core.schemas.name import UpdateName
+import utils
+import cloud_storage
 
 
 # setup loggers
-logging.config.fileConfig('app/logging.conf', disable_existing_loggers=False)
+logging.config.fileConfig('./logging.conf', disable_existing_loggers=False)
 
 # get root logger
 logger = logging.getLogger(__name__)  # the __name__ resolve to "main" since we are at the root of the project. 

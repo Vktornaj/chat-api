@@ -2,12 +2,12 @@
 
 set -e
 
-remote_host="3.129.45.65"
+remote_host="192.168.1.65"
 remote_port=22
-remote_user="admin"
+remote_user="vktornaj"
 local_dir=$(pwd)/
 remote_dir="/home/${remote_user}/chat_api"
-ssh_key="~/Desktop/Files/aws_keys/key_001.pem"
+ssh_key="~/Desktop/Files/vktserver/key_01"
 
 b_flag=''
 
@@ -19,7 +19,7 @@ while getopts 'b' flag; do
   esac
 done
 
-ssh -i ${ssh_key} ${remote_user}@${remote_host} sudo rm -rf chat_api/
+ssh -i ${ssh_key} ${remote_user}@${remote_host} sudo -S rm -rf chat_api/
 rsync -avzr --exclude='.git/' --exclude='app/venv/' --exclude='queue/venv/' --delete -e "ssh -p ${remote_port} -i ${ssh_key} -o StrictHostKeyChecking=no" ${local_dir} ${remote_user}@${remote_host}:${remote_dir}
 # rsync -avzr --exclude-from='.gitignore' --exclude='.git/' --delete -e "ssh -p ${remote_port} -i ${ssh_key} -o StrictHostKeyChecking=no" ${local_dir} ${remote_user}@${remote_host}:${remote_dir}
 
@@ -29,12 +29,13 @@ then
     ssh -tt -i ${ssh_key} ${remote_user}@${remote_host} << EOF 
 docker compose -f chat_api/compose.yml down || true
 docker compose -f chat_api/compose.yml build 
-docker compose -f chat_api/compose.yml --env-file ~/chat_api/config/.env up -d
+docker compose -f chat_api/compose.yml --env-file ~/chat_api/config/dev.env up -d
 exit
 EOF
 else
     echo "restart mode"
     ssh -i ${ssh_key} ${remote_user}@${remote_host} docker restart chat_api-web-1
+    ssh -i ${ssh_key} ${remote_user}@${remote_host} docker restart webserver
     # ssh -i ${ssh_key} ${remote_user}@${remote_host} docker restart chat_api-queue-1
 fi
 

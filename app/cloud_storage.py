@@ -10,7 +10,7 @@ class CloudStorage():
             "s3",
             aws_access_key_id=public_key, 
             aws_secret_access_key=secret_key,
-            config=boto3.session.Config(region_name=region_name)
+            config=boto3.session.Config(region_name=region_name),
         )
 
 
@@ -67,16 +67,14 @@ class CloudStorage():
             self.s3.head_object(Bucket=self.bucket_name, Key=cloud_path)
         except ClientError:
             return None
-        response = self.s3.generate_presigned_url(
-            'get_object',
-            Params={
-                'Bucket': self.bucket_name,
-                'Key': cloud_path
-            },
+        
+        url = self.s3.generate_presigned_url(
+            ClientMethod='get_object', 
+            Params={'Bucket': self.bucket_name, 'Key': cloud_path},
             ExpiresIn=expiration
         )
 
-        return response
+        return url
 
 
     def copy_object_to(

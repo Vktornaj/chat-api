@@ -10,11 +10,11 @@ import uuid
 import json
 import pickle
 
-from app.dependencies import get_db, get_current_active_user
-# from app import crud
-from app.core.schemas.user import User
-from app import utils
-# from app.core.schemas.message import MessageSend, MessageCreate
+from dependencies import get_db, get_current_active_user
+# import crud
+from core.schemas.user import User
+import utils
+# from core.schemas.message import MessageSend, MessageCreate
 
 
 logging.basicConfig(level=logging.INFO)
